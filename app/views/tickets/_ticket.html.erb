@@ -1,0 +1,64 @@
+<style>
+    table {
+        border-collapse: collapse;
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    td, th {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
+<p>** 1.5 % tax is charged</p>
+<table>
+  <tr>
+    <td><strong>Train Number:</strong></td>
+    <td><%= ticket.train.train_num %></td>
+  </tr>
+  <tr>
+    <td><strong>Confirm num:</strong></td>
+    <td><%= ticket.confirm_num %></td>
+  </tr>
+  <tr>
+    <td><strong>Departure st:</strong></td>
+    <td><%= ticket.train.departure_st %></td>
+  </tr>
+  <tr>
+    <td><strong>Departure date:</strong></td>
+    <td><%= ticket.train.departure_date.strftime('%m/%d/%Y') %></td>
+  </tr>
+  <tr>
+    <td><strong>Departure time:</strong></td>
+    <td><%= ticket.train.departure_time.strftime("%I:%M %p") %></td>
+  </tr>
+  <tr>
+    <td><strong>Arrival st:</strong></td>
+    <td><%= ticket.train.terminal_st %></td>
+  </tr>
+  <tr>
+    <td><strong>Arrival date:</strong></td>
+    <td><%= ticket.train.arrival_date %></td>
+  </tr>
+  <tr>
+    <td><strong>Arrival time:</strong></td>
+    <td><%= ticket.train.arrival_time.strftime("%I:%M %p") %></td>
+  </tr>
+  <tr>
+    <td><strong>Ticket Quantity:</strong></td>
+    <td><%= ticket.quantity %></td>
+  </tr>
+  <tr>
+    <td><strong>Ticket total Cost:</strong></td>
+    <td><%= number_with_precision(ticket.cost, precision: 2) %></td>
+  </tr>
+</table>

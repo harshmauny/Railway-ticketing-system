@@ -1,0 +1,103 @@
+<style>
+    /* Container for the form */
+    .form-container {
+        width: 50%;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form elements */
+    .form-container label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-container input[type="text"],
+    .form-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    /* Submit button */
+    .form-container input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .form-container input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    /* Error message */
+    .form-container .error-message {
+        color: red;
+    }
+    .input-container{
+        margin-right: 20px;
+    }
+</style>
+
+<div class="form-container">
+  <%= form_with(model: passenger) do |form| %>
+    <% if passenger.errors.any? %>
+      <div class="error-message">
+        <h2><%= pluralize(passenger.errors.count, "error") %> prohibited this passenger from being saved:</h2>
+
+        <ul>
+          <% passenger.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="input-container">
+      <%= form.label :username %>
+      <%= form.text_field :username %>
+    </div>
+
+    <div class="input-container">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+
+    <div class="input-container">
+      <%= form.label :email %>
+      <%= form.text_field :email %>
+    </div>
+
+    <div class="input-container">
+      <%= form.label :password %>
+      <%= form.password_field :password %>
+    </div>
+
+    <div class="input-container">
+      <%= form.label :phone_num %>
+      <%= form.text_field :phone_num %>
+    </div>
+
+    <div class="input-container">
+      <%= form.label :address %>
+      <%= form.text_field :address %>
+    </div>
+
+    <div class="input-container">
+      <%= form.label :card_num %>
+      <%= form.text_field :card_num %>
+    </div>
+
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
+</div>

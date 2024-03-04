@@ -1,0 +1,42 @@
+<style>
+    /* CSS for the review table */
+    .review-table {
+        border-collapse: collapse;
+        width: 300px;
+        margin: 20px auto;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .review-table td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .review-table td:first-child {
+        font-weight: bold;
+        width: 50%;
+        background-color: #f2f2f2;
+    }
+
+    .review-table td:last-child {
+        width: 50%;
+    }
+
+    .review-table tr:last-child td {
+        border-bottom: none;
+    }
+
+
+</style>
+
+<table class="review-table">
+  <tr>
+    <td><strong>Rating:</strong></td>
+    <td><%= review.rating %></td>
+  </tr>
+  <tr>
+    <td><strong>Feedback:</strong></td>
+    <td><%= review.feedback %></td>
+  </tr>
+</table>

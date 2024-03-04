@@ -1,0 +1,152 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .container {
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .notice {
+        color: green;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .filter-form {
+        max-width: 400px;
+        margin: 20px 10px;
+        padding: 10px;
+        background-color: #f2f2f2;
+        border-radius: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .no-decoration{
+        text-decoration: none;
+    }
+</style>
+
+<div class="container">
+<p style="color: green"><%= notice %></p>
+
+<h1>Reviews</h1>
+
+<%= form_tag('/reviews/filter', method: 'get', class: 'filter-form') do %>
+  <div class="form-group">
+    <%= label_tag 'name', 'Name' %>
+    <%= text_field_tag 'name', params[:name], class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag 'train_num', 'Train Number' %>
+    <%= text_field_tag 'train_num', params[:train_num], class: 'form-control' %>
+  </div>
+
+  <%= submit_tag 'Filter', class: 'btn btn-primary' %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Train Number</th>
+      <th>Passenger</th>
+      <th>Rating</th>
+      <th colspan="10"></th>
+    </tr>
+  </thead>
+  <%if @reviews.present?%>
+    <tbody>
+      <% @reviews.each do |review| %>
+      <tr>
+        <td><%= review.train.train_num %></td>
+        <td><%= review.passenger.name %></td>
+        <td><%= review.rating %></td>
+        <td><%= link_to 'Show', review %></td>
+        <% if  current_user.is_admin == true %>
+          <% if  current_user.id == review.passenger_id || current_user.is_admin == true%>
+            <td><%= link_to 'Edit', edit_review_path(review, train_id: review.train_id)%></td>
+          <% end %>
+          <td>
+            <%= link_to "Delete", review_path(review), data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure?"
+            } %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  <%else%>
+    <tbody>
+      <tr>
+        <td colspan="5">No reviews found</td>
+      </tr>
+    </tbody>
+  <%end%>
+</table>
+</div>
+
+

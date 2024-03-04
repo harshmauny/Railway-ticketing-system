@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Railway Ticketing System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 0;
+      }
+
+      header {
+          background-color: #007bff;
+          color: #fff;
+          padding: 10px;
+          text-align: center;
+      }
+
+      h1 {
+          text-align: center;
+          margin-bottom: 20px;
+          color: #333;
+      }
+
+      .container {
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .notice {
+          color: green;
+          text-align: center;
+      }
+
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #ddd;
+      }
+
+      th, td {
+          padding: 8px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+      }
+
+      th {
+          background-color: #f2f2f2;
+      }
+
+      tr:nth-child(even) {
+          background-color: #f2f2f2;
+      }
+
+      .filter-form {
+          max-width: 400px;
+          margin: 20px 10px;
+          padding: 10px;
+          background-color: #f2f2f2;
+          border-radius: 5px;
+      }
+
+      .form-group {
+          margin-bottom: 10px;
+          margin-right: 20px;
+      }
+
+      .form-control {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+      }
+
+      .btn-primary {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+      }
+
+      .btn-primary:hover {
+          background-color: #0056b3;
+      }
+      .no-decoration{
+          text-decoration: none;
+      }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <p class="notice"><%= notice %></p>
+
+  <% if current_user.is_admin == true %>
+    <%= link_to "New Train", new_train_path, class: 'no-decoration btn-primary' %>
+  <% end %>
+
+  <%= form_tag('/trains/filter', method: 'get', class: 'filter-form') do %>
+    <div class="form-group">
+      <%= label_tag 'departure_st', 'Departure Station' %>
+      <%= text_field_tag 'departure_st', params[:departure_st], class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'terminal_st', 'Terminal Station' %>
+      <%= text_field_tag 'terminal_st', params[:terminal_st], class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'rating', 'Rating' %>
+      <%= text_field_tag 'rating', params[:rating], class: 'form-control' %>
+    </div>
+
+    <%= submit_tag 'Filter', class: 'btn btn-primary' %>
+  <% end %>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Train number</th>
+      <th>Departure station</th>
+      <th>Departure date</th>
+      <th>Departure Time</th>
+      <th>Arrival Station</th>
+      <th>Arrival Date</th>
+      <th>Arrival time</th>
+      <th>Ticket price</th>
+      <th>Seats left</th>
+      <th>Rating</th>
+      <th colspan="4">Actions</th>
+    </tr>
+    </thead>
+
+    <% if @trains.present? %>
+      <tbody>
+      <% @trains.each do |train| %>
+        <% if current_user.is_admin == true || (train.departure_date >= Date.today && train.seats_left > 0) %>
+          <tr>
+            <td><%= train.train_num %></td>
+            <td><%= train.departure_st %></td>
+            <td><%= train.departure_date.strftime('%m/%d/%Y') %></td>
+            <td><%= train.departure_time.strftime("%I:%M %p") %></td>
+            <td><%= train.terminal_st %></td>
+            <td><%= train.arrival_date.strftime('%m/%d/%Y') %></td>
+            <td><%= train.arrival_time.strftime("%I:%M %p") %></td>
+            <td><%= train.ticket_price %></td>
+            <td><%= train.seats_left %></td>
+            <td><%= train.rating %></td>
+            <td><%= link_to 'Show', train %></td>
+            <td><%= link_to 'Book', new_ticket_path(:train_id => train.id) %></td>
+            <% if current_user.is_admin == true %>
+              <td><%= link_to 'Edit', edit_train_path(train) %></td>
+              <td><%= link_to "Delete", train_path(train), data: {
+                turbo_method: :delete,
+                turbo_confirm: "Are you sure?"
+              } %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+      </tbody>
+    <% else %>
+      <tbody>
+      <tr>
+        <td colspan="11">No trains found</td>
+      </tr>
+      </tbody>
+    <% end %>
+  </table>
+</div>
+</body>
+</html>

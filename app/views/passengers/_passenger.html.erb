@@ -1,0 +1,60 @@
+<style>
+    table {
+        border-collapse: collapse;
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    td, th {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    strong {
+        font-weight: bold;
+    }
+
+
+</style>
+
+<div id="<%= dom_id passenger %>">
+  <table>
+    <tr>
+      <td><strong>Username:</strong></td>
+      <td><%= passenger.username %></td>
+    </tr>
+    <tr>
+      <td><strong>Name:</strong></td>
+      <td><%= passenger.name %></td>
+    </tr>
+    <tr>
+      <td><strong>Email:</strong></td>
+      <td><%= passenger.email %></td>
+    </tr>
+    <tr>
+      <td><strong>Password:</strong></td>
+      <td><%= passenger.password %></td>
+    </tr>
+    <tr>
+      <td><strong>Phone num:</strong></td>
+      <td><%= passenger.phone_num %></td>
+    </tr>
+    <tr>
+      <td><strong>Address:</strong></td>
+      <td><%= passenger.address %></td>
+    </tr>
+    <tr>
+      <td><strong>Card num:</strong></td>
+      <td><%= passenger.card_num %></td>
+    </tr>
+  </table>
+</div>

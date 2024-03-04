@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Railway Ticketing System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          margin: 0;
+          padding: 0;
+      }
+
+      header {
+          background-color: #007bff;
+          color: #fff;
+          padding: 10px;
+          text-align: center;
+      }
+
+      h1 {
+          text-align: center;
+          margin-bottom: 20px;
+          color: #333;
+      }
+
+      .container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .notice {
+          color: green;
+          text-align: center;
+      }
+
+      .user-info {
+          text-align: center;
+          margin-bottom: 20px;
+      }
+
+      .user-info a {
+          text-decoration: none;
+          margin: 0 10px;
+          color: #007bff;
+      }
+
+      .user-info a:hover {
+          text-decoration: underline;
+      }
+
+      .admin-links {
+          text-align: center;
+          margin-bottom: 20px;
+      }
+
+      .admin-links a {
+          text-decoration: none;
+          margin: 0 10px;
+          color: #007bff;
+      }
+
+      .admin-links a:hover {
+          text-decoration: underline;
+      }
+
+      .auth-links {
+          text-align: center;
+          margin-top: 20px;
+      }
+
+      .auth-links a {
+          text-decoration: none;
+          margin: 0 10px;
+          color: #007bff;
+      }
+
+      .auth-links a:hover {
+          text-decoration: underline;
+      }
+  </style>
+</head>
+
+<body>
+
+  <p class="notice"><%= notice %></p>
+
+  <% if current_user %>
+    <div class="user-info">
+      Logged in as <%= current_user.name %>
+    </div>
+
+    <% if current_user.is_admin == true %>
+      <div class="admin-links">
+        <%= link_to "View all Users", passengers_path %>
+        <%= link_to "Search Train to get Users", search_train_path %>
+      </div>
+    <% end %>
+
+    <div class="admin-links">
+      <%= link_to "View all trains", trains_path %>
+      <%= link_to "View trip History", tickets_path %>
+      <%= link_to "My Profile", passenger_path(current_user) %>
+      <%= link_to "Reviews", reviews_path %>
+      <%= link_to "Logout", logout_path, onclick: "return confirm('Are you sure you want to logout?');" %>
+    </div>
+  <% else %>
+    <div class="auth-links">
+      <%= link_to "Signup", signup_path %> or
+      <%= link_to "Login", login_path %>
+    </div>
+  <% end %>
+
+</body>
+</html>

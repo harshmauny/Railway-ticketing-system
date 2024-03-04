@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @ticket %>
+
+<div>
+<%= link_to 'Review', new_review_path(train_id: @ticket.train_id) %>
+<% if current_user %>
+  <%= link_to "Cancel Ticket", ticket_path(@ticket), data: {
+    turbo_method: :delete,
+    turbo_confirm: "Are you sure?"
+  } %>
+  <%end %>
+  <%= link_to 'Go to tickets', tickets_path %>
+</div>

@@ -1,0 +1,75 @@
+<style>
+    .vertical-table {
+        border-collapse: collapse;
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    .vertical-table td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .vertical-table td:first-child {
+        font-weight: bold;
+        width: 50%;
+    }
+
+    .vertical-table td:last-child {
+        text-align: left;
+    }
+
+    .vertical-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .vertical-table td strong {
+        font-weight: bold;
+    }
+</style>
+
+
+<div id="<%= dom_id train %>">
+  <table class="vertical-table">
+    <tr>
+      <td><strong>Train num:</strong></td>
+      <td><%= train.train_num %></td>
+    </tr>
+    <tr>
+      <td><strong>Departure st:</strong></td>
+      <td><%= train.departure_st %></td>
+    </tr>
+    <tr>
+      <td><strong>Terminal st:</strong></td>
+      <td><%= train.terminal_st %></td>
+    </tr>
+    <tr>
+      <td><strong>Departure date:</strong></td>
+      <td><%= train.departure_date %></td>
+    </tr>
+    <tr>
+      <td><strong>Departure time:</strong></td>
+      <td><%= train.departure_time %></td>
+    </tr>
+    <tr>
+      <td><strong>Arrival date:</strong></td>
+      <td><%= train.arrival_date %></td>
+    </tr>
+    <tr>
+      <td><strong>Arrival time:</strong></td>
+      <td><%= train.arrival_time %></td>
+    </tr>
+    <tr>
+      <td><strong>Ticket price:</strong></td>
+      <td><%= train.ticket_price %></td>
+    </tr>
+    <tr>
+      <td><strong>Train capacity:</strong></td>
+      <td><%= train.train_capacity %></td>
+    </tr>
+    <tr>
+      <td><strong>Seats left:</strong></td>
+      <td><%= train.seats_left %></td>
+    </tr>
+  </table>
+</div>

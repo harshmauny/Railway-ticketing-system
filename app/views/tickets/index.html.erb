@@ -1,0 +1,118 @@
+<style>
+    .container {
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+<div class="container">
+<p style="color: green"><%= notice %></p>
+
+<h1>Tickets</h1>
+<h2>Click show to view more details</h2>
+<% if current_user.is_admin != true %>
+  <h3>Tickets booked by me</h3>
+<% end %>
+
+<div id="tickets">
+  <table>
+    <thead>
+    <tr>
+      <th>Train number</th>
+      <th>Passenger Name</th>
+      <th>Confirmation Number</th>
+      <th>quantity</th>
+      <th>Total cost</th>
+      <th colspan="3"></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @tickets.each do |ticket| %>
+      <% puts ticket.train_id %>
+        <% if current_user.is_admin == true || ticket.passenger_id == current_user.id %>
+          <tr>
+            <td ><%= ticket.train.train_num %></td>
+            <td ><%= ticket.other_id != nil ? @passengers.find(ticket.other_id).name : ticket.passenger.name%></td>
+            <td><%= ticket.confirm_num %></td>
+            <td><%= ticket.quantity %></td>
+            <td><%= number_with_precision(ticket.cost, precision: 2) %></td>
+            <td><%= link_to 'Show', ticket %></td>
+            <td><%= link_to 'Review', new_review_path(train_id: ticket.train_id) %></td>
+            <% if current_user %>
+              <td><%= link_to "Cancel Ticket", ticket_path(ticket), data: {
+                turbo_method: :delete,
+                turbo_confirm: "Are you sure?"
+              } %></td>
+            <% else %>
+            <% end %>
+          </tr>
+        <%end%>
+    <% end %>
+    </tbody>
+  </table>
+
+  <% if current_user.is_admin != true %>
+    <h3>Tickets booked by others</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Train number</th>
+          <th>Confirmation Number</th>
+          <th>Booked by</th>
+          <th>quantity</th>
+          <th>Total cost</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+          <% @tickets.each do |ticket| %>
+            <% if ticket.other_id == current_user.id && ticket.passenger_id != current_user.id%>
+              <% puts ticket.train_id %>
+              <tr>
+                  <td ><%= ticket.train.train_num %></td>
+                  <td><%= ticket.confirm_num %></td>
+                  <td><%= @passengers.find(ticket.passenger_id).name%>
+                  <td><%= ticket.quantity %></td>
+                  <td><%= number_with_precision(ticket.cost, precision: 2) %></td>
+                  <td><%= link_to 'Show', ticket %></td>
+                  <td><%= link_to 'Review', new_review_path(train_id: ticket.train_id) %></td>
+                <% if current_user %>
+                  <td><%= link_to "Cancel Ticket", ticket_path(ticket), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %></td>
+                <% else %>
+                <% end %>
+              </tr>
+            <%end%>
+          <% end %>
+      </tbody>
+    <% end %>
+  </table>
+</div>
+</div>

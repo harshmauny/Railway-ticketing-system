@@ -1,0 +1,187 @@
+<style>
+
+    /* Style for the error message */
+    .error-message {
+        color: red;
+    }
+
+    /* Style for labels and form fields */
+    .field {
+        margin-bottom: 10px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    /* Style for the quantity input */
+    #quantity {
+        width: 50px;
+    }
+
+    /* Style for the total cost input */
+    #total_cost {
+        width: 100px;
+        font-weight: bold;
+        background-color: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 5px;
+        cursor: not-allowed;
+    }
+
+
+    /* Style for tables */
+    .table-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .table th, .table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table th {
+        background-color: #f2f2f2;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    /* Style for booking container */
+    .booking-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+</style>
+
+<head>
+  <title>Ticket Booking Form</title>
+</head>
+<body>
+
+<%= form_with(model: ticket, local: true, html: { id: 'ticket-form' }) do |form| %>
+  <% if ticket.errors.any? %>
+    <div class="error-message">
+      <h2><%= pluralize(ticket.errors.count, "error") %> prohibited this ticket from being saved:</h2>
+      <ul>
+        <% ticket.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.hidden_field :train_id, value: @train.id %>
+  </div>
+
+  <div class="table-container">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Train Number</th>
+        <th>Departure Station</th>
+        <th>Departure Date</th>
+        <th>Departure Time</th>
+        <th>Arrival Station</th>
+        <th>Arrival Date</th>
+        <th>Arrival Time</th>
+        <th>Ticket Price</th>
+        <th>Seats Left</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><%= @train.train_num %></td>
+        <td><%= @train.departure_st %></td>
+        <td><%= @train.departure_date.strftime('%m/%d/%Y') %></td>
+        <td><%= @train.departure_time.strftime("%I:%M %p") %></td>
+        <td><%= @train.terminal_st %></td>
+        <td><%= @train.arrival_date.strftime('%m/%d/%Y') %></td>
+        <td><%= @train.arrival_time.strftime("%I:%M %p") %></td>
+        <td><%= @train.ticket_price %></td>
+        <td><%= @train.seats_left %></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="booking-container">
+
+    <div class="field">
+      <%= form.label :passenger_choice %><br />
+      <%= form.label :passenger_choice, "self", :value => "self"  %>
+      <%= form.radio_button :passenger_choice, "self", onchange: "toggleOtherPassengerField();", :checked => true %>
+      <%= form.label :passenger_choice, "other", :value => "other" %>
+      <%= form.radio_button :passenger_choice, "other",  onchange: "toggleOtherPassengerField();"%>
+    </div>
+
+    <div class="field" id="otherPassengerField" style="display: none;">
+      <%= form.label :other_passenger %><br />
+      <%= form.select :other_passenger, options_for_select(@passengers.map {|p| [p.name, p.id]}, nil), {}, id: 'other_passenger_type' %>
+    </div>
+
+  <div class="field">
+    <% qty = @train.seats_left %>
+    <%= form.label :quantity %>
+    <%= form.number_field :quantity, id: 'quantity', min: 1, max: qty, onchange: "calculateTotalPrice();", required: true %>
+  </div>
+
+    <p>1.5 % tax will be charged</p>
+  <div class="field">
+    <%= form.label :cost %>
+    <%= form.text_field :cost, id: 'total_cost', readonly: true %>
+  </div>
+
+  <div class="actions">
+    <%=  form.submit class: 'btn-primary'%>
+  </div>
+
+  </div>
+<% end %>
+
+<script type="text/javascript">
+    function calculateTotalPrice() {
+        var ticket_price = "<%= @train.ticket_price %>";
+        let taxRate = 0.015
+        document.getElementById('total_cost').value = (document.getElementById('quantity').value * ticket_price * (1 + taxRate)).toFixed(2);
+    }
+
+        function toggleOtherPassengerField() {
+        var otherPassengerField = document.getElementById('otherPassengerField');
+        var otherRadioButton = document.querySelector('input[name="ticket[passenger_choice]"][value="other"]');
+        console.log(otherRadioButton)
+        if (otherRadioButton.checked) {
+        otherPassengerField.style.display = 'block';
+        } else {
+        otherPassengerField.style.display = 'none';
+        }
+    }
+
+</script>
+</body>

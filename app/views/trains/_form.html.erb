@@ -1,0 +1,118 @@
+<style>
+    /* Form container */
+    .train-form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+
+    /* Error message */
+    .error-message {
+        color: red;
+    }
+
+    /* Form group */
+    .form-group {
+        margin-bottom: 15px;
+        margin-right: 20px;
+    }
+
+    /* Label styles */
+    .form-group label {
+        display: block;
+        font-weight: bold;
+    }
+
+    /* Input styles */
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    /* Submit button */
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+</style>
+<%= form_with(model: train, class: 'train-form') do |form| %>
+  <% if train.errors.any? %>
+    <div class="error-message">
+      <h2><%= pluralize(train.errors.count, "error") %> prohibited this train from being saved:</h2>
+      <ul>
+        <% train.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :train_num %>
+    <%= form.number_field :train_num, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :departure_st %>
+    <%= form.text_field :departure_st, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :terminal_st %>
+    <%= form.text_field :terminal_st, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :departure_date %>
+    <%= form.date_field :departure_date, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :departure_time %>
+    <%= form.time_field :departure_time, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :arrival_date %>
+    <%= form.date_field :arrival_date, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :arrival_time %>
+    <%= form.time_field :arrival_time, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :ticket_price %>
+    <%= form.text_field :ticket_price, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :train_capacity %>
+    <%= form.number_field :train_capacity, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :seats_left %>
+    <%= form.number_field :seats_left, class: 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>

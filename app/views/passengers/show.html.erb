@@ -1,0 +1,37 @@
+<style>
+    .btn-primary {
+        text-decoration: none;
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .action{
+        margin-top: 10px;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        gap: 5px;
+        align-items: center;
+    }
+</style>
+<p style="color: green"><%= notice %></p>
+
+<%= render @passenger %>
+
+<div class="action">
+  <%= link_to "Edit ", edit_passenger_path(@passenger), class: "btn-primary"%>
+  <% if current_user.is_admin == false %>
+    <%= link_to "Delete", passenger_path(@passenger), data: {
+      turbo_method: :delete,
+      turbo_confirm: "Are you sure?"
+    }, class: "btn-primary" %>
+  <% end %>
+</div>
+  

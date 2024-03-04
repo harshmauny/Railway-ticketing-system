@@ -1,0 +1,120 @@
+<style>
+
+    .container {
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .notice {
+        color: green;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .filter-form {
+        max-width: 400px;
+        margin: 20px 10px;
+        padding: 10px;
+        background-color: #f2f2f2;
+        border-radius: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .no-decoration{
+        text-decoration: none;
+    }
+</style>
+<div class="container">
+<p style="color: green"><%= notice %></p>
+
+<%= form_tag('/trains/search_train', method: 'get', class: 'filter-form') do %>
+  <div class="form-group">
+    <%= label_tag "train_num", 'Search Train Number' %>
+    <%= text_field_tag 'train_num', params[:train_num], class: 'form-control' %>
+  </div>
+  <%= submit_tag 'Filter', class: 'btn btn-primary' %>
+<% end %>
+
+<table>
+  <thead>
+  <tr>
+    <th>Username</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Phone Number</th>
+    <th>Address</th>
+    <th>Card Number</th>
+    <th>Confirmation Number</th>
+  </tr>
+  </thead>
+
+  <% if @tickets.present? %>
+  <tbody>
+  <% @tickets.each do |ticket| %>
+      <tr>
+        <td ><%= ticket.passenger.username %></td>
+        <td><%= ticket.passenger.name %></td>
+        <td><%= ticket.passenger.email %></td>
+        <td><%= ticket.passenger.phone_num   %></td>
+        <td><%= ticket.passenger.address %></td>
+        <td><%= ticket.passenger.card_num%></td>
+        <td><%= ticket.confirm_num %></td>
+      </tr>
+    <%end %>
+  </tbody>
+  <% else %>
+    <tbody>
+    <tr>
+      <td colspan="7">No users found</td>
+    </tr>
+      </tbody>
+    <%end %>
+
+</table>
+</div>

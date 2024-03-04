@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @review %>
+
+<div>
+  <% if current_user.is_admin == true || current_user.id == @review.passenger_id %>
+    <td><%= link_to 'Edit', edit_review_path(@review, train_id: @review.train_id)%></td>
+  <% end %>
+  <%= link_to "Delete", review_path(@review), data: {
+    turbo_method: :delete,
+    turbo_confirm: "Are you sure?"
+  } %>
+  <%= link_to "Back to reviews", reviews_path %>
+</div>
